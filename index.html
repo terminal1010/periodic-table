@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdTechX.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a192f 0%, #172a45 100%);
+            color: #e6f1ff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        header .logo {
+  position: absolute;
+  left: 20px;
+  height: 50px;
+}
+.logo img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 0 10px #00f9ff);
+  transition: transform 0.3s ease-in-out;
+}
+.logo img:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 20px #00f9ff);
+}
+
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #64ffda, #a8b2d1);
+            webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a8b2d1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: rgba(23, 42, 69, 0.7);
+            border: 1px solid #64ffda;
+            color: #e6f1ff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: #64ffda;
+            color: #0a192f;
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        #element-search {
+            width: 300px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #64ffda;
+            background: rgba(23, 42, 69, 0.7);
+            color: #e6f1ff;
+            font-size: 1rem;
+        }
+        
+        #element-search::placeholder {
+            color: #a8b2d1;
+        }
+        
+        #element-search:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            grid-gap: 5px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        
+        .element {
+            background: rgba(23, 42, 69, 0.8);
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .element:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+            border-color: #64ffda;
+            z-index: 10;
+        }
+        
+        .element-number {
+            font-size: 0.7rem;
+            color: #64ffda;
+        }
+        
+        .element-symbol {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 3px 0;
+        }
+        
+        .element-name {
+            font-size: 0.7rem;
+            color: #a8b2d1;
+        }
+        
+        .empty {
+            background: transparent;
+            border: none;
+        }
+        
+        .element-details {
+            background: rgba(23, 42, 69, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid #64ffda;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            display: none;
+        }
+        
+        .element-details.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail-symbol {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-right: 20px;
+            color: #64ffda;
+        }
+        
+        .detail-info h2 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .detail-info p {
+            color: #a8b2d1;
+        }
+        
+        .detail-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .property {
+            background: rgba(10, 25, 47, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .property h3 {
+            color: #64ffda;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .property p {
+            font-size: 1.2rem;
+        }
+        
+        .lanthanides-actinides {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-gap: 5px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #a8b2d1;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-columns: repeat(9, 1fr);
+            }
+            
+            .lanthanides-actinides {
+                grid-template-columns: repeat(8, 1fr);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .periodic-table {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .lanthanides-actinides {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EdTechX Interactive periodic table </h1>
+            <p class="subtitle">Think.Question.Solve.</p><p> Click on any element to learn more about its properties and characteristics.</p>
+        
+
+            
+            <a href="index.html" class="logo">
+    <img src="/home/kali/SCIENCE/Images/logo.png" alt="EdTechX Logo">
+  </a>
+        </header>
+        
+        <div class="controls">
+            <button class="category-btn active" data-category="all">All Elements</button>
+            <button class="category-btn" data-category="metal">Metals</button>
+            <button class="category-btn" data-category="nonmetal">Non-Metals</button>
+            <button class="category-btn" data-category="metalloid">Metalloids</button>
+            <button class="category-btn" data-category="noble">Noble Gases</button>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="element-search" placeholder="Search an element name or symbol...">
+        </div>
+        
+        <div class="periodic-table" id="periodic-table">
+            <!-- Elements will be generated by JavaScript -->
+        </div>
+        
+        <div class="lanthanides-actinides" id="lanthanides-actinides">
+            <!-- Lanthanides and Actinides will be generated by JavaScript -->
+        </div>
+        
+        <div class="element-details" id="element-details">
+            <!-- Element details will be populated by JavaScript -->
+        </div>
+        
+        <footer>
+            <p>Interactive Periodic Table &copy; 2023 | Created for educational purposes</p>
+            <a href="contact.html">Contact us</a>
+        </footer>
+    </div>
+
+    <script>
+        // Element data
+        const elements = [
+            // Period 1
+            { number: 1, symbol: "H", name: "Hydrogen", category: "nonmetal", mass: "1.008", discovered: "1766" },
+            { number: 2, symbol: "He", name: "Helium", category: "noble", mass: "4.0026", discovered: "1868" },
+            
+            // Period 2
+            { number: 3, symbol: "Li", name: "Lithium", category: "metal", mass: "6.94", discovered: "1817" },
+            { number: 4, symbol: "Be", name: "Beryllium", category: "metal", mass: "9.0122", discovered: "1797" },
+            { number: 5, symbol: "B", name: "Boron", category: "metalloid", mass: "10.81", discovered: "1808" },
+            { number: 6, symbol: "C", name: "Carbon", category: "nonmetal", mass: "12.011", discovered: "Ancient" },
+            { number: 7, symbol: "N", name: "Nitrogen", category: "nonmetal", mass: "14.007", discovered: "1772" },
+            { number: 8, symbol: "O", name: "Oxygen", category: "nonmetal", mass: "15.999", discovered: "1774" },
+            { number: 9, symbol: "F", name: "Fluorine", category: "nonmetal", mass: "18.998", discovered: "1886" },
+            { number: 10, symbol: "Ne", name: "Neon", category: "noble", mass: "20.180", discovered: "1898" },
+            
+            // Period 3
+            { number: 11, symbol: "Na", name: "Sodium", category: "metal", mass: "22.990", discovered: "1807" },
+            { number: 12, symbol: "Mg", name: "Magnesium", category: "metal", mass: "24.305", discovered: "1755" },
+            { number: 13, symbol: "Al", name: "Aluminum", category: "metal", mass: "26.982", discovered: "1825" },
+            { number: 14, symbol: "Si", name: "Silicon", category: "metalloid", mass: "28.085", discovered: "1824" },
+            { number: 15, symbol: "P", name: "Phosphorus", category: "nonmetal", mass: "30.974", discovered: "1669" },
+            { number: 16, symbol: "S", name: "Sulfur", category: "nonmetal", mass: "32.06", discovered: "Ancient" },
+            { number: 17, symbol: "Cl", name: "Chlorine", category: "nonmetal", mass: "35.45", discovered: "1774" },
+            { number: 18, symbol: "Ar", name: "Argon", category: "noble", mass: "39.948", discovered: "1894" },
+            
+            // Period 4
+            { number: 19, symbol: "K", name: "Potassium", category: "metal", mass: "39.098", discovered: "1807" },
+            { number: 20, symbol: "Ca", name: "Calcium", category: "metal", mass: "40.078", discovered: "1808" },
+            { number: 21, symbol: "Sc", name: "Scandium", category: "metal", mass: "44.956", discovered: "1879" },
+            { number: 22, symbol: "Ti", name: "Titanium", category: "metal", mass: "47.867", discovered: "1791" },
+            { number: 23, symbol: "V", name: "Vanadium", category: "metal", mass: "50.942", discovered: "1801" },
+            { number: 24, symbol: "Cr", name: "Chromium", category: "metal", mass: "51.996", discovered: "1797" },
+            { number: 25, symbol: "Mn", name: "Manganese", category: "metal", mass: "54.938", discovered: "1774" },
+            { number: 26, symbol: "Fe", name: "Iron", category: "metal", mass: "55.845", discovered: "Ancient" },
+            { number: 27, symbol: "Co", name: "Cobalt", category: "metal", mass: "58.933", discovered: "1735" },
+            { number: 28, symbol: "Ni", name: "Nickel", category: "metal", mass: "58.693", discovered: "1751" },
+            { number: 29, symbol: "Cu", name: "Copper", category: "metal", mass: "63.546", discovered: "Ancient" },
+            { number: 30, symbol: "Zn", name: "Zinc", category: "metal", mass: "65.38", discovered: "1746" },
+            { number: 31, symbol: "Ga", name: "Gallium", category: "metal", mass: "69.723", discovered: "1875" },
+            { number: 32, symbol: "Ge", name: "Germanium", category: "metalloid", mass: "72.630", discovered: "1886" },
+            { number: 33, symbol: "As", name: "Arsenic", category: "metalloid", mass: "74.922", discovered: "Ancient" },
+            { number: 34, symbol: "Se", name: "Selenium", category: "nonmetal", mass: "78.971", discovered: "1817" },
+            { number: 35, symbol: "Br", name: "Bromine", category: "nonmetal", mass: "79.904", discovered: "1826" },
+            { number: 36, symbol: "Kr", name: "Krypton", category: "noble", mass: "83.798", discovered: "1898" },
+            
+            // Period 5
+            { number: 37, symbol: "Rb", name: "Rubidium", category: "metal", mass: "85.468", discovered: "1861" },
+            { number: 38, symbol: "Sr", name: "Strontium", category: "metal", mass: "87.62", discovered: "1790" },
+            { number: 39, symbol: "Y", name: "Yttrium", category: "metal", mass: "88.906", discovered: "1794" },
+            { number: 40, symbol: "Zr", name: "Zirconium", category: "metal", mass: "91.224", discovered: "1789" },
+            { number: 41, symbol: "Nb", name: "Niobium", category: "metal", mass: "92.906", discovered: "1801" },
+            { number: 42, symbol: "Mo", name: "Molybdenum", category: "metal", mass: "95.95", discovered: "1778" },
+            { number: 43, symbol: "Tc", name: "Technetium", category: "metal", mass: "98", discovered: "1937" },
+            { number: 44, symbol: "Ru", name: "Ruthenium", category: "metal", mass: "101.07", discovered: "1844" },
+            { number: 45, symbol: "Rh", name: "Rhodium", category: "metal", mass: "102.91", discovered: "1803" },
+            { number: 46, symbol: "Pd", name: "Palladium", category: "metal", mass: "106.42", discovered: "1803" },
+            { number: 47, symbol: "Ag", name: "Silver", category: "metal", mass: "107.87", discovered: "Ancient" },
+            { number: 48, symbol: "Cd", name: "Cadmium", category: "metal", mass: "112.41", discovered: "1817" },
+            { number: 49, symbol: "In", name: "Indium", category: "metal", mass: "114.82", discovered: "1863" },
+            { number: 50, symbol: "Sn", name: "Tin", category: "metal", mass: "118.71", discovered: "Ancient" },
+            { number: 51, symbol: "Sb", name: "Antimony", category: "metalloid", mass: "121.76", discovered: "Ancient" },
+            { number: 52, symbol: "Te", name: "Tellurium", category: "metalloid", mass: "127.60", discovered: "1782" },
+            { number: 53, symbol: "I", name: "Iodine", category: "nonmetal", mass: "126.90", discovered: "1811" },
+            { number: 54, symbol: "Xe", name: "Xenon", category: "noble", mass: "131.29", discovered: "1898" },
+            
+            // Period 6
+            { number: 55, symbol: "Cs", name: "Cesium", category: "metal", mass: "132.91", discovered: "1860" },
+            { number: 56, symbol: "Ba", name: "Barium", category: "metal", mass: "137.33", discovered: "1808" },
+            { number: 57, symbol: "La", name: "Lanthanum", category: "metal", mass: "138.91", discovered: "1839" },
+            { number: 72, symbol: "Hf", name: "Hafnium", category: "metal", mass: "178.49", discovered: "1923" },
+            { number: 73, symbol: "Ta", name: "Tantalum", category: "metal", mass: "180.95", discovered: "1802" },
+            { number: 74, symbol: "W", name: "Tungsten", category: "metal", mass: "183.84", discovered: "1783" },
+            { number: 75, symbol: "Re", name: "Rhenium", category: "metal", mass: "186.21", discovered: "1925" },
+            { number: 76, symbol: "Os", name: "Osmium", category: "metal", mass: "190.23", discovered: "1803" },
+            { number: 77, symbol: "Ir", name: "Iridium", category: "metal", mass: "192.22", discovered: "1803" },
+            { number: 78, symbol: "Pt", name: "Platinum", category: "metal", mass: "195.08", discovered: "1735" },
+            { number: 79, symbol: "Au", name: "Gold", category: "metal", mass: "196.97", discovered: "Ancient" },
+            { number: 80, symbol: "Hg", name: "Mercury", category: "metal", mass: "200.59", discovered: "Ancient" },
+            { number: 81, symbol: "Tl", name: "Thallium", category: "metal", mass: "204.38", discovered: "1861" },
+            { number: 82, symbol: "Pb", name: "Lead", category: "metal", mass: "207.2", discovered: "Ancient" },
+            { number: 83, symbol: "Bi", name: "Bismuth", category: "metal", mass: "208.98", discovered: "Ancient" },
+            { number: 84, symbol: "Po", name: "Polonium", category: "metal", mass: "209", discovered: "1898" },
+            { number: 85, symbol: "At", name: "Astatine", category: "metalloid", mass: "210", discovered: "1940" },
+            { number: 86, symbol: "Rn", name: "Radon", category: "noble", mass: "222", discovered: "1900" },
+            
+            // Period 7
+            { number: 87, symbol: "Fr", name: "Francium", category: "metal", mass: "223", discovered: "1939" },
+            { number: 88, symbol: "Ra", name: "Radium", category: "metal", mass: "226", discovered: "1898" },
+            { number: 89, symbol: "Ac", name: "Actinium", category: "metal", mass: "227", discovered: "1899" },
+            { number: 104, symbol: "Rf", name: "Rutherfordium", category: "metal", mass: "267", discovered: "1969" },
+            { number: 105, symbol: "Db", name: "Dubnium", category: "metal", mass: "268", discovered: "1970" },
+            { number: 106, symbol: "Sg", name: "Seaborgium", category: "metal", mass: "269", discovered: "1974" },
+            { number: 107, symbol: "Bh", name: "Bohrium", category: "metal", mass: "270", discovered: "1981" },
+            { number: 108, symbol: "Hs", name: "Hassium", category: "metal", mass: "269", discovered: "1984" },
+            { number: 109, symbol: "Mt", name: "Meitnerium", category: "metal", mass: "278", discovered: "1982" },
+            { number: 110, symbol: "Ds", name: "Darmstadtium", category: "metal", mass: "281", discovered: "1994" },
+            { number: 111, symbol: "Rg", name: "Roentgenium", category: "metal", mass: "282", discovered: "1994" },
+            { number: 112, symbol: "Cn", name: "Copernicium", category: "metal", mass: "285", discovered: "1996" },
+            { number: 113, symbol: "Nh", name: "Nihonium", category: "metal", mass: "286", discovered: "2004" },
+            { number: 114, symbol: "Fl", name: "Flerovium", category: "metal", mass: "289", discovered: "1999" },
+            { number: 115, symbol: "Mc", name: "Moscovium", category: "metal", mass: "290", discovered: "2003" },
+            { number: 116, symbol: "Lv", name: "Livermorium", category: "metal", mass: "293", discovered: "2000" },
+            { number: 117, symbol: "Ts", name: "Tennessine", category: "metalloid", mass: "294", discovered: "2010" },
+            { number: 118, symbol: "Og", name: "Oganesson", category: "noble", mass: "294", discovered: "2006" }
+        ];
+
+        // Lanthanides and Actinides
+        const lanthanides = [
+            { number: 58, symbol: "Ce", name: "Cerium", category: "metal", mass: "140.12", discovered: "1803" },
+            { number: 59, symbol: "Pr", name: "Praseodymium", category: "metal", mass: "140.91", discovered: "1885" },
+            { number: 60, symbol: "Nd", name: "Neodymium", category: "metal", mass: "144.24", discovered: "1885" },
+            { number: 61, symbol: "Pm", name: "Promethium", category: "metal", mass: "145", discovered: "1945" },
+            { number: 62, symbol: "Sm", name: "Samarium", category: "metal", mass: "150.36", discovered: "1879" },
+            { number: 63, symbol: "Eu", name: "Europium", category: "metal", mass: "151.96", discovered: "1901" },
+            { number: 64, symbol: "Gd", name: "Gadolinium", category: "metal", mass: "157.25", discovered: "1880" },
+            { number: 65, symbol: "Tb", name: "Terbium", category: "metal", mass: "158.93", discovered: "1843" },
+            { number: 66, symbol: "Dy", name: "Dysprosium", category: "metal", mass: "162.50", discovered: "1886" },
+            { number: 67, symbol: "Ho", name: "Holmium", category: "metal", mass: "164.93", discovered: "1878" },
+            { number: 68, symbol: "Er", name: "Erbium", category: "metal", mass: "167.26", discovered: "1843" },
+            { number: 69, symbol: "Tm", name: "Thulium", category: "metal", mass: "168.93", discovered: "1879" },
+            { number: 70, symbol: "Yb", name: "Ytterbium", category: "metal", mass: "173.05", discovered: "1878" },
+            { number: 71, symbol: "Lu", name: "Lutetium", category: "metal", mass: "174.97", discovered: "1907" }
+        ];
+
+        const actinides = [
+            { number: 90, symbol: "Th", name: "Thorium", category: "metal", mass: "232.04", discovered: "1829" },
+            { number: 91, symbol: "Pa", name: "Protactinium", category: "metal", mass: "231.04", discovered: "1913" },
+            { number: 92, symbol: "U", name: "Uranium", category: "metal", mass: "238.03", discovered: "1789" },
+            { number: 93, symbol: "Np", name: "Neptunium", category: "metal", mass: "237", discovered: "1940" },
+            { number: 94, symbol: "Pu", name: "Plutonium", category: "metal", mass: "244", discovered: "1940" },
+            { number: 95, symbol: "Am", name: "Americium", category: "metal", mass: "243", discovered: "1944" },
+            { number: 96, symbol: "Cm", name: "Curium", category: "metal", mass: "247", discovered: "1944" },
+            { number: 97, symbol: "Bk", name: "Berkelium", category: "metal", mass: "247", discovered: "1949" },
+            { number: 98, symbol: "Cf", name: "Californium", category: "metal", mass: "251", discovered: "1950" },
+            { number: 99, symbol: "Es", name: "Einsteinium", category: "metal", mass: "252", discovered: "1952" },
+            { number: 100, symbol: "Fm", name: "Fermium", category: "metal", mass: "257", discovered: "1952" },
+            { number: 101, symbol: "Md", name: "Mendelevium", category: "metal", mass: "258", discovered: "1955" },
+            { number: 102, symbol: "No", name: "Nobelium", category: "metal", mass: "259", discovered: "1958" },
+            { number: 103, symbol: "Lr", name: "Lawrencium", category: "metal", mass: "262", discovered: "1961" }
+        ];
+
+        // Function to create an element box
+        function createElementBox(element) {
+            const elementDiv = document.createElement('div');
+            elementDiv.className = `element ${element.category}`;
+            elementDiv.innerHTML = `
+                <div class="element-number">${element.number}</div>
+                <div class="element-symbol">${element.symbol}</div>
+                <div class="element-name">${element.name}</div>
+            `;
+            
+            elementDiv.addEventListener('click', () => showElementDetails(element));
+            
+            return elementDiv;
+        }
+
+        // Function to show element details
+        function showElementDetails(element) {
+            const detailsDiv = document.getElementById('element-details');
+            
+            detailsDiv.innerHTML = `
+                <div class="detail-header">
+                    <div class="detail-symbol">${element.symbol}</div>
+                    <div class="detail-info">
+                        <h2>${element.name}</h2>
+                        <p>Atomic Number: ${element.number}</p>
+                    </div>
+                </div>
+                <div class="detail-properties">
+                    <div class="property">
+                        <h3>Atomic Mass</h3>
+                        <p>${element.mass} u</p>
+                    </div>
+                    <div class="property">
+                        <h3>Category</h3>
+                        <p>${element.category.charAt(0).toUpperCase() + element.category.slice(1)}</p>
+                    </div>
+                    <div class="property">
+                        <h3>Discovered</h3>
+                        <p>${element.discovered}</p>
+                    </div>
+                </div>
+                <div class="property" style="grid-column: 1 / -1; margin-top: 20px;">
+                    <h3>Interesting Fact</h3>
+                    <p>${getRandomFact(element)}</p>
+                </div>
+            `;
+            
+            detailsDiv.classList.add('active');
+            
+            // Scroll to details
+            detailsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Function to get a random fact about the element
+        function getRandomFact(element) {
+           const facts = {
+    "H": "Hydrogen is the most abundant element in the universe, making up about 75% of its elemental mass.",
+    "He": "Helium was first discovered on the Sun before it was found on Earth, which is how it got its name from the Greek word for the Sun, Helios.",
+    "O": "Oxygen makes up about 21% of Earth's atmosphere and is essential for most life forms through respiration.",
+    "C": "Carbon is known as the 'element of life' because it's a key component of all known life on Earth.",
+    "Au": "Gold is so malleable that a single ounce can be stretched into a wire over 40 miles long.",
+    "Fe": "Iron is the most abundant element on Earth by mass, forming much of Earth's outer and inner core.",
+    "U": "Uranium is the heaviest naturally occurring element, with an atomic number of 92.",
+    "Si": "Silicon is the second most abundant element in the Earth's crust after oxygen.",
+    "Na": "Sodium reacts explosively with water, producing hydrogen gas and heat.",
+    "K": "Potassium is essential for nerve function and is found in bananas, which are famously rich in it.",
+    "Hg": "Mercury is the only metal that is liquid at room temperature.",
+    "Pb": "Lead was once widely used in paints and gasoline but is now restricted due to its toxicity.",
+    "Ne": "Neon lights work by passing electricity through neon gas, which glows a bright reddish-orange.",
+    "Ag": "Silver has the highest electrical conductivity of any element.",
+    "Al": "Aluminum is lightweight, corrosion-resistant, and the most abundant metal in Earth’s crust.",
+    "Ni": "Nickel is commonly used in rechargeable batteries, including those for electric vehicles.",
+    "Cl": "Chlorine is a powerful disinfectant and is used to keep drinking water safe.",
+    "Ti": "Titanium is as strong as steel but much lighter, making it ideal for aircraft and implants.",
+
+    // More additions
+    "Li": "Lithium is the lightest metal and is crucial in modern rechargeable batteries.",
+    "Be": "Beryllium is rare and used in aerospace materials because of its strength and lightness.",
+    "B": "Boron is essential for plant growth and is used in making strong borosilicate glass (like Pyrex).",
+    "F": "Fluorine is the most reactive element and is used in toothpaste to prevent cavities.",
+    "Mg": "Magnesium burns with a bright white flame and is used in fireworks and flares.",
+    "P": "Phosphorus was first discovered from urine and is vital for DNA and energy (ATP) in cells.",
+    "S": "Sulfur has been used since ancient times in gunpowder and is key for proteins in living things.",
+    "Ar": "Argon is an inert gas that makes up about 1% of Earth's atmosphere and is used in light bulbs.",
+    "Zn": "Zinc is used to galvanize steel to prevent rusting and is essential for human health.",
+    "Cr": "Chromium gives rubies their red color and emeralds their green hue.",
+    "Co": "Cobalt is used in blue pigments and is essential for vitamin B12.",
+    "I": "Iodine is vital for thyroid health and turns a deep purple vapor when heated.",
+    "Pt": "Platinum is highly resistant to corrosion and is used in catalytic converters.",
+    "W": "Tungsten has the highest melting point of any element and is used in light bulb filaments.",
+    "Rn": "Radon is a radioactive noble gas that can accumulate in basements.",
+    "Cs": "Cesium is one of the most reactive metals and is used in atomic clocks.",
+    "Sr": "Strontium gives fireworks their bright red color.",
+    "Ba": "Barium compounds are used in medical imaging to highlight the digestive tract."
+};
+
+            
+            return facts[element.symbol] || `This element has unique properties that make it important in various scientific and industrial applications.`;
+        }
+
+        // Function to render the periodic table
+        function renderPeriodicTable() {
+            const tableDiv = document.getElementById('periodic-table');
+            tableDiv.innerHTML = '';
+            
+            // Define the positions of elements in the periodic table
+            const positions = [
+                // Period 1
+                { number: 1, row: 1, col: 1 },
+                { number: 2, row: 1, col: 18 },
+                
+                // Period 2
+                { number: 3, row: 2, col: 1 },
+                { number: 4, row: 2, col: 2 },
+                { number: 5, row: 2, col: 13 },
+                { number: 6, row: 2, col: 14 },
+                { number: 7, row: 2, col: 15 },
+                { number: 8, row: 2, col: 16 },
+                { number: 9, row: 2, col: 17 },
+                { number: 10, row: 2, col: 18 },
+                
+                // Period 3
+                { number: 11, row: 3, col: 1 },
+                { number: 12, row: 3, col: 2 },
+                { number: 13, row: 3, col: 13 },
+                { number: 14, row: 3, col: 14 },
+                { number: 15, row: 3, col: 15 },
+                { number: 16, row: 3, col: 16 },
+                { number: 17, row: 3, col: 17 },
+                { number: 18, row: 3, col: 18 },
+                
+                // Period 4
+                { number: 19, row: 4, col: 1 },
+                { number: 20, row: 4, col: 2 },
+                { number: 21, row: 4, col: 3 },
+                { number: 22, row: 4, col: 4 },
+                { number: 23, row: 4, col: 5 },
+                { number: 24, row: 4, col: 6 },
+                { number: 25, row: 4, col: 7 },
+                { number: 26, row: 4, col: 8 },
+                { number: 27, row: 4, col: 9 },
+                { number: 28, row: 4, col: 10 },
+                { number: 29, row: 4, col: 11 },
+                { number: 30, row: 4, col: 12 },
+                { number: 31, row: 4, col: 13 },
+                { number: 32, row: 4, col: 14 },
+                { number: 33, row: 4, col: 15 },
+                { number: 34, row: 4, col: 16 },
+                { number: 35, row: 4, col: 17 },
+                { number: 36, row: 4, col: 18 },
+                
+                // Period 5
+                { number: 37, row: 5, col: 1 },
+                { number: 38, row: 5, col: 2 },
+                { number: 39, row: 5, col: 3 },
+                { number: 40, row: 5, col: 4 },
+                { number: 41, row: 5, col: 5 },
+                { number: 42, row: 5, col: 6 },
+                { number: 43, row: 5, col: 7 },
+                { number: 44, row: 5, col: 8 },
+                { number: 45, row: 5, col: 9 },
+                { number: 46, row: 5, col: 10 },
+                { number: 47, row: 5, col: 11 },
+                { number: 48, row: 5, col: 12 },
+                { number: 49, row: 5, col: 13 },
+                { number: 50, row: 5, col: 14 },
+                { number: 51, row: 5, col: 15 },
+                { number: 52, row: 5, col: 16 },
+                { number: 53, row: 5, col: 17 },
+                { number: 54, row: 5, col: 18 },
+                
+                // Period 6
+                { number: 55, row: 6, col: 1 },
+                { number: 56, row: 6, col: 2 },
+                { number: 57, row: 6, col: 3 },
+                // Skip lanthanides (58-71)
+                { number: 72, row: 6, col: 4 },
+                { number: 73, row: 6, col: 5 },
+                { number: 74, row: 6, col: 6 },
+                { number: 75, row: 6, col: 7 },
+                { number: 76, row: 6, col: 8 },
+                { number: 77, row: 6, col: 9 },
+                { number: 78, row: 6, col: 10 },
+                { number: 79, row: 6, col: 11 },
+                { number: 80, row: 6, col: 12 },
+                { number: 81, row: 6, col: 13 },
+                { number: 82, row: 6, col: 14 },
+                { number: 83, row: 6, col: 15 },
+                { number: 84, row: 6, col: 16 },
+                { number: 85, row: 6, col: 17 },
+                { number: 86, row: 6, col: 18 },
+                
+                // Period 7
+                { number: 87, row: 7, col: 1 },
+                { number: 88, row: 7, col: 2 },
+                { number: 89, row: 7, col: 3 },
+                // Skip actinides (90-103)
+                { number: 104, row: 7, col: 4 },
+                { number: 105, row: 7, col: 5 },
+                { number: 106, row: 7, col: 6 },
+                { number: 107, row: 7, col: 7 },
+                { number: 108, row: 7, col: 8 },
+                { number: 109, row: 7, col: 9 },
+                { number: 110, row: 7, col: 10 },
+                { number: 111, row: 7, col: 11 },
+                { number: 112, row: 7, col: 12 },
+                { number: 113, row: 7, col: 13 },
+                { number: 114, row: 7, col: 14 },
+                { number: 115, row: 7, col: 15 },
+                { number: 116, row: 7, col: 16 },
+                { number: 117, row: 7, col: 17 },
+                { number: 118, row: 7, col: 18 }
+            ];
+            
+            // Create a grid of 7 rows and 18 columns
+            for (let row = 1; row <= 7; row++) {
+                for (let col = 1; col <= 18; col++) {
+                    const position = positions.find(p => p.row === row && p.col === col);
+                    
+                    if (position) {
+                        const element = elements.find(e => e.number === position.number);
+                        if (element) {
+                            const elementDiv = createElementBox(element);
+                            tableDiv.appendChild(elementDiv);
+                        }
+                    } else {
+                        // Create an empty cell
+                        const emptyDiv = document.createElement('div');
+                        emptyDiv.className = 'empty';
+                        tableDiv.appendChild(emptyDiv);
+                    }
+                }
+            }
+            
+            // Render lanthanides and actinides
+            renderLanthanidesActinides();
+        }
+
+        // Function to render lanthanides and actinides
+        function renderLanthanidesActinides() {
+            const laDiv = document.getElementById('lanthanides-actinides');
+            laDiv.innerHTML = '';
+            
+            // Add a label for lanthanides
+            const lanthanidesLabel = document.createElement('div');
+            lanthanidesLabel.className = 'empty';
+            lanthanidesLabel.textContent = 'Lanthanides';
+            lanthanidesLabel.style.gridColumn = '1 / 4';
+            lanthanidesLabel.style.display = 'flex';
+            lanthanidesLabel.style.alignItems = 'center';
+            lanthanidesLabel.style.justifyContent = 'center';
+            lanthanidesLabel.style.fontWeight = 'bold';
+            lanthanidesLabel.style.color = '#64ffda';
+            laDiv.appendChild(lanthanidesLabel);
+            
+            // Add lanthanides
+            lanthanides.forEach(element => {
+                const elementDiv = createElementBox(element);
+                laDiv.appendChild(elementDiv);
+            });
+            
+            // Add a label for actinides
+            const actinidesLabel = document.createElement('div');
+            actinidesLabel.className = 'empty';
+            actinidesLabel.textContent = 'Actinides';
+            actinidesLabel.style.gridColumn = '1 / 4';
+            actinidesLabel.style.display = 'flex';
+            actinidesLabel.style.alignItems = 'center';
+            actinidesLabel.style.justifyContent = 'center';
+            actinidesLabel.style.fontWeight = 'bold';
+            actinidesLabel.style.color = '#64ffda';
+            laDiv.appendChild(actinidesLabel);
+            
+            // Add actinides
+            actinides.forEach(element => {
+                const elementDiv = createElementBox(element);
+                laDiv.appendChild(elementDiv);
+            });
+        }
+
+        // Function to filter elements by category
+        function filterElements(category) {
+            const allElements = document.querySelectorAll('.element');
+            
+            allElements.forEach(element => {
+                if (category === 'all' || element.classList.contains(category)) {
+                    element.style.display = 'flex';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.category-btn[data-category="${category}"]`).classList.add('active');
+        }
+
+        // Function to search elements
+        function searchElements() {
+            const searchTerm = document.getElementById('element-search').value.toLowerCase();
+            const allElements = document.querySelectorAll('.element');
+            
+            allElements.forEach(element => {
+                const symbol = element.querySelector('.element-symbol').textContent.toLowerCase();
+                const name = element.querySelector('.element-name').textContent.toLowerCase();
+                
+                if (symbol.includes(searchTerm) || name.includes(searchTerm)) {
+                    element.style.display = 'flex';
+                    element.style.backgroundColor = 'rgba(100, 255, 218, 0.2)';
+                    element.style.borderColor = '#64ffda';
+                } else {
+                    element.style.display = 'none';
+                    element.style.backgroundColor = '';
+                    element.style.borderColor = '';
+                }
+            });
+        }
+
+        // Initialize the periodic table
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPeriodicTable();
+            
+            // Add event listeners to category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterElements(btn.dataset.category);
+                });
+            });
+            
+            // Add event listener to search input
+            document.getElementById('element-search').addEventListener('input', searchElements);
+            
+            // Show details for Hydrogen by default
+            showElementDetails(elements[0]);
+        });
+    </script>
+</body>
+</html>
